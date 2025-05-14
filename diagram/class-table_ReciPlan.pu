@@ -1,0 +1,36 @@
+@startuml class-table_ReciPlan
+
+title 現在のテーブル構成（Dexie DBクラス図）
+
+class Recipe {
+  +id: string
+  +name: string
+  +ingredients: IngredientInRecipe[]
+}
+
+class IngredientInRecipe {
+  +ingredientId: string
+  +quantity: string
+  +unitPrefix: string
+  +unitSuffix: string
+}
+
+class Material {
+  +id: string
+  +name: string
+  +unitPrefix: string
+  +unitSuffix: string
+}
+
+class SynonymEntry {
+  +synonymId: string
+  +materialId: string
+  +synonymWord: string
+}
+
+' 関係性（リレーション）
+Recipe "1" --> "*" IngredientInRecipe : IngredientInRecipe[]
+IngredientInRecipe "1" --> "1" Material : ingredientId
+SynonymEntry "1" --> "1" Material : materialId
+
+@enduml

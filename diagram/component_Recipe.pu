@@ -1,0 +1,17 @@
+@startuml component_Recipe
+title 「レシピ登録」画面 コンポーネント図
+
+package "レシピ登録画面" {
+  [RecipeForm] --> [IngredientInput] : 材料行の追加・編集
+  [RecipeForm] --> [MaterialSelector] : 材料選択
+  [RecipeForm] --> [DexieDB] : レシピ登録・保存
+  [RecipeForm] --> [Toast] : 成功／エラー表示
+
+  [RecipeForm] --> [RecipeList] : 登録済みレシピを渡す
+  [RecipeList] --> [DexieDB] : レシピ一覧取得
+  [RecipeList] --> [Modal] : 確認ダイアログ（削除など）
+
+  [DexieDB] ..> [IndexedDB] : Dexie.jsラッパー
+}
+
+@enduml

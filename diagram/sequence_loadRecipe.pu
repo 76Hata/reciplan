@@ -1,0 +1,27 @@
+@startuml loadRecipe
+
+title レシピ登録画面 レシピ読み込み処理
+
+actor User
+participant "Home Component" as Home
+participant "Dexie DB (Recipes)" as Recipes
+participant "Dexie DB (Material)" as Material
+
+User -> Home : 🍽️ 既存レシピ一覧よりレシピを選択
+
+Home -> Recipes : 該当レシピの検索
+alt レシピが存在
+    Recipes --> Home : レシピデータの取得
+
+    loop 材料ごと
+        Home -> Material : 該当材料の取得
+        Material --> Home : 材料情報の返却
+    end
+
+    Home -> Home : 材料一覧を表示
+    Home -> User : 「レシピを読み込みました」アラート
+else レシピが存在しない
+    Home --> User : 何もせず終了
+end
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml deleteRecipe
+
+title レシピ登録画面 レシピ削除処理
+
+actor User
+participant "Home Component" as Home
+participant "Dexie DB (recipes)" as Recipes
+
+User -> Home : 🗑️ 削除ボタンをクリック
+Home -> User : トースト通知「このレシピを削除してもよろしいですか？」
+
+alt ユーザーがOKを選択
+    Home -> Recipes : レシピデータを削除
+    Recipes --> Home : 削除完了
+
+    Home -> Recipes : 最新のレシピ一覧取得
+    Recipes --> Home : 最新のレシピ一覧返却
+
+    Home -> Home : レシピ一覧の再描画
+    Home -> User : トースト通知「レシピを削除しました」
+else キャンセル
+    Home -> Home : 削除処理を中止
+end
+
+@enduml

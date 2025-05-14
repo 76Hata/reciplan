@@ -1,0 +1,28 @@
+@startuml registRecipe
+
+title レシピ登録画面 レシピ登録処理
+
+actor User
+participant "Home Component" as Home
+participant "Dexie DB(Material)" as Material
+participant "Dexie DB(SynonymEntry)" as SynonymEntry
+participant "Dexie DB (Recipes)" as Recipes
+
+User -> Home : 「登録する」ボタン押下
+Home -> Home : 入力バリデーション
+loop 材料ごと
+    Home -> SynonymEntry : 類義語辞書の存在確認
+    alt 存在する
+        SynonymEntry -> Material : 類義語から正規の材料名を取得
+        Material -> Home : 正規の材料名を返却
+    else 存在しない
+        Home -> Material : 材料を新規追加
+    end
+    Home -> Home : 材料数量から単位と数量を分割し格納
+    Home -> Home : 材料配列を追加
+end
+Home -> Recipes : レシピを新規（更新）登録
+Home -> Home : 入力フォームを初期化
+Home -> User : 完了メッセージ表示
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml registSynonym
+
+title 類義語の登録処理シーケンス図（登場人物限定）
+
+actor ユーザー
+participant "SynonymManager" as SynonymManager
+participant "Dexie DB(Material)" as Material
+participant "Dexie DB(SynonymEntry)" as SynonymEntry
+
+ユーザー -> SynonymManager : 材料と類義語を入力・登録ボタン押下
+SynonymManager -> Material : 材料名検索
+alt 材料が存在する
+    SynonymManager -> SynonymEntry : 同一 materialId + synonymWord の存在確認
+    alt 類義語が既に存在する
+        SynonymManager -> ユーザー : エラーメッセージ「すでに登録済み」
+    else 新規登録
+        SynonymManager -> SynonymEntry : 類義語レコードを追加
+        SynonymManager -> ユーザー : トースト通知「登録成功」
+        SynonymManager -> SynonymEntry : 一覧再取得
+        SynonymManager -> ユーザー : フォーム初期化・再描画
+    end
+else 材料が存在しない
+    SynonymManager -> ユーザー : エラーメッセージ「材料が見つかりません」
+end
+
+@enduml
